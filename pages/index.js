@@ -30,7 +30,7 @@ export default function Home() {
       alert(error.message);
     }
   }
-
+//
   return (
     <div>
       <header>
