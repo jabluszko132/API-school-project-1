@@ -7,6 +7,8 @@ export default function Home() {
   const [result, setResult] = useState();
 
   async function onSubmit(event) {
+    console.log(event);
+    setAnimalInput(chat.innerText +"\n"+ thePrompt.value);
     event.preventDefault();
     try {
       const response = await fetch("/api/generate", {
@@ -46,16 +48,18 @@ export default function Home() {
     </article>
     <article>
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/A_black_image.jpg/320px-A_black_image.jpg" alt="ai generated art" id="generatedImg"/>
+        
         <form onSubmit={onSubmit}>
            <input
+             id="thePrompt"
              type="text"
              name="animal"
-             placeholder="Enter an animal"
+             placeholder="Message the bot"
              value={animalInput}
              onChange={(e) => setAnimalInput(e.target.value)}
            />
-           <input type="submit" value="Generate names" />
-           <div className={styles.result}>{result}</div>
+           <input type="submit" value="Generate names"/>
+           <div className={styles.result} id="chat">{result}</div>
          </form> 
     </article>
     <footer>
