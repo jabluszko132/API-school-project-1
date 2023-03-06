@@ -1,14 +1,16 @@
 import Head from "next/head";
-import { useState } from "react";
+import { use, useState } from "react";
 import styles from "./index.module.css";
 
 export default function Home() {
-  const [animalInput, setAnimalInput] = useState("");
-  const [result, setResult] = useState();
+  const [messageInput, setMessageInput] = useState("");
+  const [result, setResult] = useState("");
+
 
   async function onSubmit(event) {
-    console.log(event);
-    setAnimalInput(chat.innerText +"\n"+ thePrompt.value);
+    setResult(chat.innerText+"User: "+messageInput+"\n");
+    // console.log(event);
+    setMessageInput(result +"\n"+ thePrompt.value);
     event.preventDefault();
     try {
       const response = await fetch("/api/generate", {
@@ -16,7 +18,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ animal: animalInput }),
+        body: JSON.stringify({ message: messageInput }),
       });
 
       const data = await response.json();
@@ -24,17 +26,15 @@ export default function Home() {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      setResult(data.result);
-      setAnimalInput("");
+      setResult(chat.innerText+"\n Bot: " + data.result);
+      setMessageInput("");
     } catch(error) {
-      // Consider implementing your own error handling logic here
       console.error(error);
       alert(error.message);
     }
   }
-//test
   return (
-    <div>
+    <div className={styles.main}>
       <header>
         <h1>Create-a-friend</h1>
         <nav>
@@ -53,13 +53,16 @@ export default function Home() {
            <input
              id="thePrompt"
              type="text"
-             name="animal"
+             name="message"
              placeholder="Message the bot"
-             value={animalInput}
-             onChange={(e) => setAnimalInput(e.target.value)}
+             value={messageInput}
+             onChange={(e) => setMessageInput(e.target.value)}
            />
            <input type="submit" value="Generate names"/>
-           <div className={styles.result} id="chat">{result}</div>
+           <br/>
+           <textarea id="chat" className={styles.result} readOnly value={result}/>
+           <br/>
+           {/* <div className={styles.result} id="chat">{result}</div> */}
          </form> 
     </article>
     <footer>
@@ -95,3 +98,4 @@ export default function Home() {
     // </div>}
   );
 }
+

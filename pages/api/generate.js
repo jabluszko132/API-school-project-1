@@ -15,8 +15,9 @@ export default async function (req, res) {
     return;
   }
 
-  const animal = req.body.animal || '';
-  if (animal.trim().length === 0) {
+  const message = req.body.message || '';
+  if (message.trim().length === 0) {
+    console.log(message); //dont delete this line! it doesnt work without it for some reason!
     res.status(400).json({
       error: {
         message: "Cannot send an empty message",
@@ -28,12 +29,11 @@ export default async function (req, res) {
   try {
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
-      prompt: animal,
+      prompt: message,
       temperature: 0.6,
     });
     res.status(200).json({ result: completion.data.choices[0].text });
   } catch(error) {
-    // Consider adjusting the error handling logic for your use case
     if (error.response) {
       console.error(error.response.status, error.response.data);
       res.status(error.response.status).json(error.response.data);
@@ -48,11 +48,8 @@ export default async function (req, res) {
   }
 }
 
-function generatePrompt(animal) {
-  return `You are a chatbot. Generate only your response to the given prompt. Here is the entire conversation:
-
-User: "Hi"
-You: "Good morning"
-User: ${animal}
-You:`;
-}
+// function generatePrompt(message) {
+//   return `You are a friendly and talkative chatbot. Here is the entire conversation:
+// ${message}
+// `;
+// }
