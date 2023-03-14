@@ -28,7 +28,7 @@ export default async function (req, res) {
 
   try {
     const completion = await openai.createCompletion({
-      model: "text-davinci-003",
+      model: "babbage",
       prompt: message,
       temperature: 0.6,
     });
@@ -47,9 +47,3 @@ export default async function (req, res) {
     }
   }
 }
-
-// function generatePrompt(message) {
-//   return `You are a friendly and talkative chatbot. Here is the entire conversation:
-// ${message}
-// `;
-// }

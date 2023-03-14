@@ -68,3 +68,8 @@
   overflow-y: scroll;
   text-overflow: clip;
 }
+
+.main img {
+  width: 300px;
+  text-align: center;
+}
